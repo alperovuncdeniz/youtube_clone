@@ -3,8 +3,8 @@ class UserModel {
   final String username;
   final String email;
   final String profilePic;
-  final String subscriptions;
-  final String videos;
+  final List<String> subscriptions;
+  final int videos;
   final String userId;
   final String description;
   final String type;
@@ -20,4 +20,32 @@ class UserModel {
     required this.description,
     required this.type,
   });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'displayName': displayName,
+      'username': username,
+      'email': email,
+      'profilePic': profilePic,
+      'subscriptions': subscriptions,
+      'videos': videos,
+      'userId': userId,
+      'description': description,
+      'type': type,
+    };
+  }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      displayName: map['displayName'] as String,
+      username: map['username'] as String,
+      email: map['email'] as String,
+      profilePic: map['profilePic'] as String,
+      subscriptions: List<String>.from(map['subscriptions'] ?? []),
+      videos: map['videos'] as int,
+      userId: map['userId'] as String,
+      description: map['description'] as String,
+      type: map['type'] as String,
+    );
+  }
 }
