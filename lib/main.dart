@@ -30,7 +30,7 @@ class MyApp extends ConsumerWidget {
           if (!snapshot.hasData) {
             return const LoginPage();
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Loader();
+            return const LoaderPage();
           }
 
           return StreamBuilder(
@@ -47,7 +47,7 @@ class MyApp extends ConsumerWidget {
                   email: user.email!,
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Loader();
+                return const LoaderPage();
               }
               return MyChannelScreen();
             },

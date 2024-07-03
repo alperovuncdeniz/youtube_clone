@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           error: (error, stackTrace) => const ErrorPage(),
-                          loading: () => const Loader(),
+                          loading: () => const LoaderPage(),
                         );
                   },
                 ),
