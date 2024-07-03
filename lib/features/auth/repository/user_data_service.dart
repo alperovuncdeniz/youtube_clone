@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_clone/features/auth/model/user_model.dart';
 
-final userDataService = Provider(
+final userDataServiceProvider = Provider(
   (ref) => UserDataService(
     auth: FirebaseAuth.instance,
     firestore: FirebaseFirestore.instance,
