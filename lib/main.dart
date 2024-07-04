@@ -49,7 +49,7 @@ class MyApp extends ConsumerWidget {
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return const LoaderPage();
               }
-              return VideoDetailsPage();
+              return HomePage();
             },
           );
         },
