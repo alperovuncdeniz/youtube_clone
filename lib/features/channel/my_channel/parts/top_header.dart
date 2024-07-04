@@ -1,23 +1,32 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import 'package:youtube_clone/features/auth/model/user_model.dart';
+
 class TopHeader extends StatelessWidget {
-  const TopHeader({super.key});
+  final UserModel user;
+  const TopHeader({
+    super.key,
+    required this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Center(
+        Center(
           child: CircleAvatar(
             radius: 38,
             backgroundColor: Colors.grey,
+            backgroundImage: CachedNetworkImageProvider(user.profilePic),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 4),
+        Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 4),
           child: Text(
-            "Alper1",
-            style: TextStyle(
+            user.displayName,
+            style: const TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
@@ -26,12 +35,12 @@ class TopHeader extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 9),
           child: RichText(
-            text: const TextSpan(
-              style: TextStyle(color: Colors.blueGrey),
+            text: TextSpan(
+              style: const TextStyle(color: Colors.blueGrey),
               children: [
-                TextSpan(text: "@alper1  "),
-                TextSpan(text: "No subscriptions  "),
-                TextSpan(text: "No videos"),
+                TextSpan(text: "${user.username}  "),
+                TextSpan(text: "${user.subscriptions.length} subscriptions "),
+                TextSpan(text: "${user.videos} videos"),
               ],
             ),
           ),
