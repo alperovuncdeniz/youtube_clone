@@ -74,8 +74,9 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AccountPage()),
+                                    builder: (context) =>
+                                        AccountPage(user: currentUser),
+                                  ),
                                 );
                               },
                               child: CircleAvatar(
