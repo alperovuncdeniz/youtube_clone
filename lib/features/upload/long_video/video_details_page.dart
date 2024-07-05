@@ -116,13 +116,13 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                           borderRadius: BorderRadius.all(Radius.circular(11)),
                         ),
                         child: TextButton(
-                          onPressed: () {
-                            String thumbnail = putFileInStorage(
+                          onPressed: () async {
+                            String thumbnail = await putFileInStorage(
                               image,
                               randomNumber,
                               "image",
                             );
-                            String videoUrl = putFileInStorage(
+                            String videoUrl = await putFileInStorage(
                               widget.video,
                               randomNumber,
                               "video",
