@@ -1,68 +1,170 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
-import 'package:youtube_clone/cores/colors.dart';
-import 'package:youtube_clone/cores/widgets/flat_button.dart';
-import 'package:youtube_clone/features/content/Long_video/widgets/video_externel_buttons.dart';
 
-class Video extends StatefulWidget {
-  const Video({super.key});
+import 'package:youtube_clone/cores/colors.dart';
+import 'package:youtube_clone/cores/screens/error_page.dart';
+import 'package:youtube_clone/cores/screens/loader_page.dart';
+import 'package:youtube_clone/cores/widgets/flat_button.dart';
+import 'package:youtube_clone/features/auth/model/user_model.dart';
+import 'package:youtube_clone/features/auth/provider/user_provider.dart';
+import 'package:youtube_clone/features/content/Long_video/parts/post.dart';
+import 'package:youtube_clone/features/content/Long_video/widgets/video_externel_buttons.dart';
+import 'package:youtube_clone/features/upload/long_video/video_model.dart';
+
+class Video extends ConsumerStatefulWidget {
+  final VideoModel video;
+  const Video({
+    super.key,
+    required this.video,
+  });
 
   @override
-  State<Video> createState() => _VideoState();
+  ConsumerState<Video> createState() => _VideoState();
 }
 
-class _VideoState extends State<Video> {
+class _VideoState extends ConsumerState<Video> {
   bool isShowIcons = false;
+  bool isPlaying = false;
   VideoPlayerController? _controller;
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
-      ..initialize().then(
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(widget.video.videoUrl),
+    )..initialize().then(
         (_) {
           setState(() {});
         },
       );
   }
 
+  toogleVideoPlayer() {
+    if (_controller!.value.isPlaying) {
+      _controller!.pause();
+      isPlaying = false;
+      setState(() {});
+    } else {
+      _controller!.play();
+      isPlaying = true;
+      setState(() {});
+    }
+  }
+
+  goBackward() {
+    Duration position = _controller!.value.position;
+    position = position - Duration(seconds: 1);
+    _controller!.seekTo(position);
+  }
+
+  goForward() {
+    Duration position = _controller!.value.position;
+    position = position + Duration(seconds: 1);
+    _controller!.seekTo(position);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final AsyncValue<UserModel> user =
+        ref.watch(anyUserDataProvider(widget.video.userId));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(176),
-          child: GestureDetector(
-            onTap: () {},
-            child: Stack(
-              children: [
-                AspectRatio(
+          child: _controller!.value.isInitialized
+              ? AspectRatio(
                   aspectRatio: _controller!.value.aspectRatio,
-                  child: VideoPlayer(_controller!),
-                ),
-                Positioned(
-                  left: 182,
-                  top: 87,
                   child: GestureDetector(
-                    onTap: () {},
-                    child: SizedBox(
-                      height: 50,
-                      child: Container(),
+                    onTap: isShowIcons
+                        ? () {
+                            isShowIcons = false;
+                            setState(() {});
+                          }
+                        : () {
+                            isShowIcons = true;
+                            setState(() {});
+                          },
+                    child: Stack(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: _controller!.value.aspectRatio,
+                          child: VideoPlayer(_controller!),
+                        ),
+                        isShowIcons
+                            ? Positioned(
+                                left: 170,
+                                top: 92,
+                                child: GestureDetector(
+                                  onTap: toogleVideoPlayer,
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: Image.asset(
+                                      "assets/images/play.png",
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
+                        isShowIcons
+                            ? Positioned(
+                                left: 48,
+                                top: 94,
+                                child: GestureDetector(
+                                  onTap: goBackward,
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: Image.asset(
+                                      "assets/images/go_back_final.png",
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
+                        isShowIcons
+                            ? Positioned(
+                                right: 55,
+                                top: 93,
+                                child: GestureDetector(
+                                  onTap: goForward,
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: Image.asset(
+                                      "assets/images/go ahead final.png",
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            height: 7.5,
+                            child: VideoProgressIndicator(
+                              _controller!,
+                              allowScrubbing: true,
+                              colors: const VideoProgressColors(
+                                playedColor: Colors.red,
+                                bufferedColor: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: 7.5,
-                    child: Container(),
-                  ),
                 )
-              ],
-            ),
-          ),
+              : const Padding(
+                  padding: EdgeInsets.only(bottom: 100),
+                  child: LoaderPage(),
+                ),
         ),
       ),
       body: SafeArea(
@@ -71,7 +173,7 @@ class _VideoState extends State<Video> {
             Padding(
               padding: const EdgeInsets.only(left: 13, top: 4),
               child: Text(
-                "How to learn Flutter Quickly",
+                widget.video.title,
                 overflow: TextOverflow.ellipsis,
                 softWrap: true,
                 style: const TextStyle(
@@ -87,7 +189,9 @@ class _VideoState extends State<Video> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 4),
                     child: Text(
-                      "No view",
+                      widget.video.views == 0
+                          ? "No view"
+                          : "${widget.video.views} views",
                       style: const TextStyle(
                         fontSize: 13.4,
                         color: Color(0xff5F5F5F),
@@ -114,11 +218,13 @@ class _VideoState extends State<Video> {
                   CircleAvatar(
                     radius: 16,
                     backgroundColor: Colors.grey,
+                    backgroundImage:
+                        CachedNetworkImageProvider(user.value!.profilePic),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 5),
                     child: Text(
-                      "A.DD",
+                      user.value!.displayName,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -127,8 +233,10 @@ class _VideoState extends State<Video> {
                   Padding(
                     padding: const EdgeInsets.only(right: 6, left: 6),
                     child: Text(
-                      "1 Subscriptions",
-                      style: TextStyle(
+                      user.value!.subscriptions.isEmpty
+                          ? "No Subscription"
+                          : "${user.value!.subscriptions.length} Subscriptions",
+                      style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
@@ -186,11 +294,47 @@ class _VideoState extends State<Video> {
                         text: "Share",
                         iconData: Icons.share,
                       ),
-                    )
+                    ),
+                    const VideoExtraButtons(
+                      text: "Remix",
+                      iconData: Icons.analytics_outlined,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 9, right: 9),
+                      child: VideoExtraButtons(
+                        text: "Download",
+                        iconData: Icons.download,
+                      ),
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
+            Expanded(
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("videos")
+                    .where("videoId", isNotEqualTo: widget.video.videoId)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.data == null) {
+                    return ErrorPage();
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return LoaderPage();
+                  }
+                  final videosMap = snapshot.data!.docs;
+                  final videos = videosMap
+                      .map((video) => VideoModel.fromMap(video.data()))
+                      .toList();
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Post(video: videos[index]);
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
