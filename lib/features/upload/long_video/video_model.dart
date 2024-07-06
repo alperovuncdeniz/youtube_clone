@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class VideoModel {
   final String videoUrl;
   final String thumbnail;
@@ -40,7 +42,9 @@ class VideoModel {
       videoUrl: map['videoUrl'] as String,
       thumbnail: map['thumbnail'] as String,
       title: map['title'] as String,
-      datePublished: map['datePublished'] as DateTime,
+      datePublished: map['datePublished'] is Timestamp
+          ? (map["datePublished"] as Timestamp).toDate()
+          : DateTime.fromMillisecondsSinceEpoch(map["datePublished"] as int),
       views: map['views'] as int,
       videoId: map['videoId'] as String,
       userId: map['userId'] as String,

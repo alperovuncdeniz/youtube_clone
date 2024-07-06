@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youtube_clone/features/auth/model/user_model.dart';
+import 'package:youtube_clone/features/auth/provider/user_provider.dart';
+import 'package:youtube_clone/features/content/Long_video/parts/video.dart';
 import 'package:youtube_clone/features/upload/long_video/video_model.dart';
 
-class Post extends StatelessWidget {
+class Post extends ConsumerWidget {
   final VideoModel video;
   const Post({
     super.key,
@@ -13,13 +15,23 @@ class Post extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<UserModel> userModel =
+        ref.watch(anyUserDataProvider(video.userId));
+    final user = userModel.whenData((user) => user);
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Video(),
+          ),
+        );
+      },
       child: Column(
         children: [
           CachedNetworkImage(
-            imageUrl:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwGxx1DUJNuxRai0IV8G04TKWCpkcmRlkRhA&s",
+            imageUrl: video.thumbnail,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -29,13 +41,15 @@ class Post extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.grey,
+                  backgroundImage:
+                      CachedNetworkImageProvider(user.value!.profilePic),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  "First Video Here",
-                  style: TextStyle(
+                  video.title,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -43,7 +57,7 @@ class Post extends StatelessWidget {
               const Spacer(),
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.more_vert),
+                icon: const Icon(Icons.more_vert),
               ),
             ],
           ),
@@ -53,16 +67,16 @@ class Post extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "A.D",
-                  style: TextStyle(
+                  user.value!.displayName,
+                  style: const TextStyle(
                     color: Colors.blueGrey,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    "No views",
-                    style: TextStyle(
+                    video.views == 0 ? "No View" : "${video.views}",
+                    style: const TextStyle(
                       color: Colors.blueGrey,
                     ),
                   ),
