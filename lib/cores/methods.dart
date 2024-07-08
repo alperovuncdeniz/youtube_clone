@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:youtube_clone/features/upload/long_video/video_details_page.dart';
+import 'package:youtube_clone/features/upload/short_video/pages/short_video_screen.dart';
 
 void showErrorSnackBar(String message, context) =>
     ScaffoldMessenger.of(context).showSnackBar(
@@ -34,7 +35,7 @@ Future pickShortVideo(context) async {
     context,
     MaterialPageRoute(
       builder: (context) {
-        return VideoDetailsPage(video: video);
+        return ShortVideoScreen(shortVideo: video);
       },
     ),
   );
