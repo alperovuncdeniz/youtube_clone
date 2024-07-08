@@ -46,7 +46,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         iconSize: 24,
         tabBackgroundColor: Colors.purple.withOpacity(0.1),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-        tabs: [
+        tabs: const [
           GButton(icon: Icons.home, text: "Home"),
           GButton(icon: Icons.videocam, text: "Shorts"),
           GButton(icon: Icons.cloud_upload),

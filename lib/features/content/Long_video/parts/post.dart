@@ -83,7 +83,7 @@ class Post extends ConsumerWidget {
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   "a moment ago",
                   style: TextStyle(
                     color: Colors.blueGrey,

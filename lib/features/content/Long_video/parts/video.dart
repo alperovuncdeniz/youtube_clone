@@ -57,13 +57,13 @@ class _VideoState extends ConsumerState<Video> {
 
   goBackward() {
     Duration position = _controller!.value.position;
-    position = position - Duration(seconds: 1);
+    position = position - const Duration(seconds: 1);
     _controller!.seekTo(position);
   }
 
   goForward() {
     Duration position = _controller!.value.position;
-    position = position + Duration(seconds: 1);
+    position = position + const Duration(seconds: 1);
     _controller!.seekTo(position);
   }
 
@@ -111,7 +111,7 @@ class _VideoState extends ConsumerState<Video> {
                                   ),
                                 ),
                               )
-                            : SizedBox(),
+                            : const SizedBox(),
                         isShowIcons
                             ? Positioned(
                                 left: 48,
@@ -127,7 +127,7 @@ class _VideoState extends ConsumerState<Video> {
                                   ),
                                 ),
                               )
-                            : SizedBox(),
+                            : const SizedBox(),
                         isShowIcons
                             ? Positioned(
                                 right: 55,
@@ -143,7 +143,7 @@ class _VideoState extends ConsumerState<Video> {
                                   ),
                                 ),
                               )
-                            : SizedBox(),
+                            : const SizedBox(),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: SizedBox(
@@ -199,11 +199,11 @@ class _VideoState extends ConsumerState<Video> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4, right: 8),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 4, right: 8),
                     child: Text(
                       "5 minutes ago",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13.4,
                         color: Color(0xff5F5F5F),
                       ),
@@ -276,7 +276,7 @@ class _VideoState extends ConsumerState<Video> {
                         children: [
                           GestureDetector(
                             onTap: () {},
-                            child: Icon(
+                            child: const Icon(
                               Icons.thumb_up,
                               size: 15.5,
                             ),

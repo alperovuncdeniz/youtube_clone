@@ -13,32 +13,46 @@ class CommentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.only(top: 7, left: 8, right: 4),
       child: Column(
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 15,
-                backgroundColor: Colors.grey,
-                backgroundImage: CachedNetworkImageProvider(comment.profilePic),
+              Padding(
+                padding: const EdgeInsets.only(top: 7),
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundColor: Colors.grey,
+                  backgroundImage:
+                      CachedNetworkImageProvider(comment.profilePic),
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 comment.displayName,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text(
+              const SizedBox(width: 8),
+              const Text(
                 "a moment ago",
+                style: TextStyle(
+                  color: Colors.blueGrey,
+                ),
               ),
               const Spacer(),
               const Icon(Icons.more_vert),
             ],
           ),
-          Text(
-            comment.commentText,
+          Padding(
+            padding:
+                EdgeInsets.only(right: MediaQuery.sizeOf(context).width * 0.52),
+            child: Text(
+              comment.commentText,
+            ),
           ),
         ],
       ),

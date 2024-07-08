@@ -61,7 +61,7 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
           StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("comments")
-                .where("videoId", isEqualTo: widget.video)
+                .where("videoId", isEqualTo: widget.video.videoId)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData || snapshot.data == null) {

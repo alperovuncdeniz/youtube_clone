@@ -27,6 +27,20 @@ Future pickVideo(context) async {
   return video;
 }
 
+Future pickShortVideo(context) async {
+  XFile? file = await ImagePicker().pickVideo(source: ImageSource.gallery);
+  File video = File(file!.path);
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) {
+        return VideoDetailsPage(video: video);
+      },
+    ),
+  );
+  return video;
+}
+
 Future<File> pickImage() async {
   XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
   File image = File(file!.path);
