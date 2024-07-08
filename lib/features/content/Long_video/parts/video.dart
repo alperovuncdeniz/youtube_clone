@@ -13,6 +13,7 @@ import 'package:youtube_clone/features/auth/model/user_model.dart';
 import 'package:youtube_clone/features/auth/provider/user_provider.dart';
 import 'package:youtube_clone/features/content/Long_video/parts/post.dart';
 import 'package:youtube_clone/features/content/Long_video/widgets/video_externel_buttons.dart';
+import 'package:youtube_clone/features/content/comment/comment_sheet.dart';
 import 'package:youtube_clone/features/upload/long_video/video_model.dart';
 
 class Video extends ConsumerStatefulWidget {
@@ -310,6 +311,27 @@ class _VideoState extends ConsumerState<Video> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+              child: GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => CommentSheet(
+                      video: widget.video,
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  ),
+                  width: 200,
+                ),
+              ),
+            ),
             Expanded(
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -318,16 +340,19 @@ class _VideoState extends ConsumerState<Video> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData || snapshot.data == null) {
-                    return ErrorPage();
+                    return const ErrorPage();
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return LoaderPage();
+                    return const LoaderPage();
                   }
                   final videosMap = snapshot.data!.docs;
                   final videos = videosMap
                       .map((video) => VideoModel.fromMap(video.data()))
                       .toList();
                   return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: videos.length,
                     itemBuilder: (context, index) {
                       return Post(video: videos[index]);
                     },
