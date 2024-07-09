@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:youtube_clone/cores/widgets/flat_button.dart';
 import 'package:youtube_clone/features/auth/model/user_model.dart';
+import 'package:youtube_clone/features/channel/users_channel/pages/user_channel_page.dart';
 
 class SearchChannelTile extends StatelessWidget {
   final UserModel user;
@@ -16,53 +17,63 @@ class SearchChannelTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.grey,
-            backgroundImage: CachedNetworkImageProvider(user.profilePic),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 45),
-            child: Column(
-              children: [
-                Text(
-                  user.displayName,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  user.username,
-                  style: const TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: 13,
-                  ),
-                ),
-                Text(
-                  user.subscriptions.toString(),
-                  style: const TextStyle(
-                    color: Colors.blueGrey,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  height: 40,
-                  width: 110,
-                  child: FlatButton(
-                    text: "Subscribe",
-                    onPressed: () {},
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserChannelPage(userId: user.userId),
             ),
-          ),
-          const Spacer(),
-        ],
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.grey,
+              backgroundImage: CachedNetworkImageProvider(user.profilePic),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 45),
+              child: Column(
+                children: [
+                  Text(
+                    user.displayName,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    user.username,
+                    style: const TextStyle(
+                      color: Colors.blueGrey,
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    user.subscriptions.toString(),
+                    style: const TextStyle(
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 40,
+                    width: 110,
+                    child: FlatButton(
+                      text: "Subscribe",
+                      onPressed: () {},
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }

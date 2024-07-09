@@ -5,6 +5,7 @@ import 'package:youtube_clone/features/auth/model/user_model.dart';
 import 'package:youtube_clone/features/content/Long_video/parts/post.dart';
 import 'package:youtube_clone/features/search/providers/search_providers.dart';
 import 'package:youtube_clone/features/search/widgets/search_channel_tile_widget.dart';
+import 'package:youtube_clone/features/upload/long_video/video_model.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -30,12 +31,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     result.addAll(foundChannels);
 
-    final foundVideos = users.where(
+    List<VideoModel> videos = await ref.watch(allVideosProvider);
+
+    final foundVideos = videos.where(
       (video) {
-        return video.displayName
-            .toString()
-            .toLowerCase()
-            .contains(keyWordSelected);
+        return video.title.toString().toLowerCase().contains(keyWordSelected);
       },
     ).toList();
 
@@ -78,7 +78,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 34,
+                    height: 39,
                     width: 65,
                     child: CustomButton(
                       iconData: Icons.search,
@@ -98,13 +98,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       itemsWigdets.add(
                         Post(video: selectedItem),
                       );
-                    } else if (selectedItem.type == "user") {
+                    }
+                    if (selectedItem.type == "user") {
                       itemsWigdets.add(
                         SearchChannelTile(
                           user: selectedItem,
                         ),
                       );
-                    } else if (foundItems.isEmpty) {
+                    }
+                    if (foundItems.isEmpty) {
                       return const SizedBox();
                     }
                     return itemsWigdets[0];
