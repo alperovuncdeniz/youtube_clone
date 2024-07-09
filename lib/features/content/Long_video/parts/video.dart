@@ -366,13 +366,18 @@ class _VideoState extends ConsumerState<Video> {
                       builder: (context, ref, child) {
                         final AsyncValue<List<CommentModel>> comments =
                             ref.watch(commentsProvider(widget.video.videoId));
-
-                        if (comments.value!.isEmpty) {
-                          return const SizedBox();
-                        }
-                        return VideoFirstComment(
-                          comments: comments.value!,
-                          user: user.value!,
+                        return comments.when(
+                          data: (data) {
+                            if (comments.value!.isEmpty) {
+                              return const SizedBox();
+                            }
+                            return VideoFirstComment(
+                              comments: comments.value!,
+                              user: user.value!,
+                            );
+                          },
+                          error: (error, stackTrace) => const ErrorPage(),
+                          loading: () => const LoaderPage(),
                         );
                       },
                     ),
@@ -380,33 +385,31 @@ class _VideoState extends ConsumerState<Video> {
                 ),
               ),
             ),
-            Expanded(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("videos")
-                    .where("videoId", isNotEqualTo: widget.video.videoId)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData || snapshot.data == null) {
-                    return const ErrorPage();
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const LoaderPage();
-                  }
-                  final videosMap = snapshot.data!.docs;
-                  final videos = videosMap
-                      .map((video) => VideoModel.fromMap(video.data()))
-                      .toList();
-                  return ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: videos.length,
-                    itemBuilder: (context, index) {
-                      return Post(video: videos[index]);
-                    },
-                  );
-                },
-              ),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("videos")
+                  .where("videoId", isNotEqualTo: widget.video.videoId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData || snapshot.data == null) {
+                  return const ErrorPage();
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const LoaderPage();
+                }
+                final videosMap = snapshot.data!.docs;
+                final videos = videosMap
+                    .map((video) => VideoModel.fromMap(video.data()))
+                    .toList();
+                return ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: videos.length,
+                  itemBuilder: (context, index) {
+                    return Post(video: videos[index]);
+                  },
+                );
+              },
             ),
           ],
         ),
