@@ -15,6 +15,9 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
+  /* final GlobalKey<BottomNavigationState> bottomNavigationKey =
+      GlobalKey<BottomNavigationState>(); */
+
   List foundItems = [];
 
   Future<void> filterList(String keyWordSelected) async {
@@ -57,7 +60,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      /* if (bottomNavigationKey.currentState != null) {
+                        bottomNavigationKey.currentState!.currentIndex = 0;
+                        debugPrint(bottomNavigationKey
+                            .currentState!.currentIndex
+                            .toString());
+                        setState(() {});
+                      } */
+                    },
                     icon: Icon(
                       Icons.arrow_back,
                       color: Colors.grey.shade700,

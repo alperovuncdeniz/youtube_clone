@@ -5,9 +5,9 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 class BottomNavigation extends StatefulWidget {
   final Function(int index) onPressed;
   const BottomNavigation({
-    Key? key,
+    super.key,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
