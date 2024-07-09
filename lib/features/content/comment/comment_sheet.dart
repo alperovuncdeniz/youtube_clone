@@ -85,7 +85,10 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
             );
           },
         ),
-        const Spacer(),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 5),
+          child: Divider(height: 1),
+        ),
         Padding(
           padding: const EdgeInsets.only(bottom: 10, right: 8, left: 8),
           child: Row(
