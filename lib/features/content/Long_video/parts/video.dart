@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
@@ -13,8 +14,12 @@ import 'package:youtube_clone/features/auth/model/user_model.dart';
 import 'package:youtube_clone/features/auth/provider/user_provider.dart';
 import 'package:youtube_clone/features/content/Long_video/parts/post.dart';
 import 'package:youtube_clone/features/content/Long_video/widgets/video_externel_buttons.dart';
+import 'package:youtube_clone/features/content/Long_video/widgets/video_first_comment.dart';
+import 'package:youtube_clone/features/content/comment/comment_provider.dart';
 import 'package:youtube_clone/features/content/comment/comment_sheet.dart';
+import 'package:youtube_clone/features/upload/comments/comment_model.dart';
 import 'package:youtube_clone/features/upload/long_video/video_model.dart';
+import 'package:youtube_clone/features/upload/long_video/video_repository.dart';
 
 class Video extends ConsumerStatefulWidget {
   final VideoModel video;
@@ -65,6 +70,14 @@ class _VideoState extends ConsumerState<Video> {
     Duration position = _controller!.value.position;
     position = position + const Duration(seconds: 1);
     _controller!.seekTo(position);
+  }
+
+  likeVideo() async {
+    await ref.watch(longVideoProvider).likeVideo(
+          currentUserId: FirebaseAuth.instance.currentUser!.uid,
+          likes: widget.video.likes,
+          videoId: widget.video.videoId,
+        );
   }
 
   @override
@@ -275,11 +288,18 @@ class _VideoState extends ConsumerState<Video> {
                       child: Row(
                         children: [
                           GestureDetector(
-                            onTap: () {},
-                            child: const Icon(
+                            onTap: likeVideo,
+                            child: Icon(
                               Icons.thumb_up,
+                              color: widget.video.likes.contains(
+                                      FirebaseAuth.instance.currentUser!.uid)
+                                  ? Colors.blue
+                                  : Colors.black,
                               size: 15.5,
                             ),
+                          ),
+                          Text(
+                            "${widget.video.likes.length}",
                           ),
                           const SizedBox(width: 19),
                           const Icon(
@@ -323,12 +343,29 @@ class _VideoState extends ConsumerState<Video> {
                   );
                 },
                 child: Container(
-                  height: 45,
+                  height: 75,
                   decoration: BoxDecoration(
                     color: Colors.grey.shade300,
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   width: 200,
+                  child: Padding(
+                    padding: const EdgeInsets.all(9.0),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        final AsyncValue<List<CommentModel>> comments =
+                            ref.watch(commentsProvider(widget.video.videoId));
+
+                        if (comments.value!.isEmpty) {
+                          return const SizedBox();
+                        }
+                        return VideoFirstComment(
+                          comments: comments.value!,
+                          user: user.value!,
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
