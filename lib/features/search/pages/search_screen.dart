@@ -58,28 +58,55 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.arrow_back),
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.grey.shade700,
+                    ),
                   ),
                   SizedBox(
-                    height: 45,
-                    width: 270,
+                    height: 43,
+                    width: 279,
                     child: TextFormField(
                       onChanged: (value) async {
                         await filterList(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Search YouTube...",
                         border: OutlineInputBorder(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(18)),
                           borderSide: BorderSide(
-                            color: Colors.blue,
+                            color: Colors.grey.shade200,
                           ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(18)),
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade200,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(18)),
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade200,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xfff2f2f2),
+                        contentPadding:
+                            const EdgeInsets.only(left: 13, bottom: 12),
+                        hintStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: 39,
-                    width: 65,
+                    width: 55,
                     child: CustomButton(
                       iconData: Icons.search,
                       onTap: () {},
