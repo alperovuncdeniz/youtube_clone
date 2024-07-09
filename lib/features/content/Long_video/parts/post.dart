@@ -46,63 +46,77 @@ class Post extends ConsumerWidget {
               CachedNetworkImage(
                 imageUrl: video.thumbnail,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 5),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.grey,
-                      backgroundImage:
-                          CachedNetworkImageProvider(user.profilePic),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      video.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.more_vert),
-                  ),
-                ],
-              ),
               Padding(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.sizeOf(context).width * 0.12),
+                padding: const EdgeInsets.only(left: 5, bottom: 4, top: 4),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      user.displayName,
-                      style: const TextStyle(
-                        color: Colors.blueGrey,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, left: 5),
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.grey,
+                        backgroundImage:
+                            CachedNetworkImageProvider(user.profilePic),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        video.views == 0 ? "No View" : "${video.views}",
-                        style: const TextStyle(
-                          color: Colors.blueGrey,
-                        ),
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              video.title,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  user.displayName,
+                                  style: const TextStyle(
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text(
+                                    video.views == 0
+                                        ? "No View"
+                                        : "${video.views} Views",
+                                    style: const TextStyle(
+                                      color: Colors.blueGrey,
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  "a moment ago",
+                                  style: TextStyle(
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    const Text(
-                      "a moment ago",
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                      ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.more_vert),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
