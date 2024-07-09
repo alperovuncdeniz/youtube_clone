@@ -36,24 +36,36 @@ class _ShortVideoTileState extends State<ShortVideoTile> {
       child: shortVideoController!.value.isInitialized
           ? Column(
               children: [
-                AspectRatio(
-                  aspectRatio: 11 / 16,
-                  child: VideoPlayer(shortVideoController!),
+                GestureDetector(
+                  onTap: () {
+                    if (!shortVideoController!.value.isPlaying) {
+                      shortVideoController!.play();
+                    } else {
+                      shortVideoController!.pause();
+                    }
+                  },
+                  child: AspectRatio(
+                    aspectRatio: 11 / 16,
+                    child: VideoPlayer(shortVideoController!),
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.shortVideo.caption,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10, top: 6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.shortVideo.caption,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      timeago.format(widget.shortVideo.datePublished),
-                    ),
-                  ],
+                      Text(
+                        timeago.format(widget.shortVideo.datePublished),
+                      ),
+                    ],
+                  ),
                 )
               ],
             )
