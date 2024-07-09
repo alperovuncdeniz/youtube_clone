@@ -35,7 +35,7 @@ class _ShortVideoScreenState extends State<ShortVideoScreen> {
     editorController!.initialize().then((_) => setState(() {}));
   }
 
-  exportVideo() async {
+  Future<void> exportVideo() async {
     isExporting.value = true;
     final config = VideoFFmpegVideoEditorConfig(editorController!);
     final execute = await config.getExecuteConfig();
@@ -50,7 +50,9 @@ class _ShortVideoScreenState extends State<ShortVideoScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ShortVideoDetailsPage(),
+              builder: (context) => ShortVideoDetailsPage(
+                video: widget.shortVideo,
+              ),
             ),
           );
         } else {
