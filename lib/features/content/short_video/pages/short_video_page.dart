@@ -17,8 +17,10 @@ class ShortVideoPage extends StatelessWidget {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance.collection("shorts").snapshots(),
             builder: (context, snapshot) {
-              if (snapshot.data == null || !snapshot.hasData) {
+              if (snapshot.hasError) {
                 return const ErrorPage();
+              } else if (snapshot.data == null || !snapshot.hasData) {
+                return const LoaderPage();
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return const LoaderPage();
               }
