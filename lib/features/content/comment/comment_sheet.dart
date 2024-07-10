@@ -122,6 +122,7 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
                         displayName: user.value!.displayName,
                         profilePic: user.value!.profilePic,
                       );
+                  commentController.clear();
                 },
                 icon: const Icon(
                   Icons.send,
