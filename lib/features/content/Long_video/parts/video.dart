@@ -391,8 +391,10 @@ class _VideoState extends ConsumerState<Video> {
                   .where("videoId", isNotEqualTo: widget.video.videoId)
                   .snapshots(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData || snapshot.data == null) {
+                if (snapshot.hasError) {
                   return const ErrorPage();
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  return const LoaderPage();
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
                   return const LoaderPage();
