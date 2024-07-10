@@ -5,9 +5,9 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 class BottomNavigation extends StatefulWidget {
   final Function(int index) onPressed;
   const BottomNavigation({
-    Key? key,
+    super.key,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
@@ -40,10 +40,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ],
         curve: Curves.easeInToLinear,
         duration: const Duration(milliseconds: 419),
-        gap: 8,
+        gap: 6,
         color: Colors.grey[800],
         activeColor: Colors.purple,
-        iconSize: 24,
+        iconSize: 23,
         tabBackgroundColor: Colors.purple.withOpacity(0.1),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         tabs: const [
@@ -51,7 +51,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           GButton(icon: Icons.videocam, text: "Shorts"),
           GButton(icon: Icons.cloud_upload),
           GButton(icon: Icons.search, text: "Search"),
-          GButton(icon: Icons.heart_broken, text: "Log out"),
+          GButton(icon: Icons.heart_broken, text: "Log Out"),
         ],
         onTabChange: widget.onPressed,
         selectedIndex: currentIndex,

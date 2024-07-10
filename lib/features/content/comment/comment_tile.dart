@@ -22,37 +22,45 @@ class CommentTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 7),
                 child: CircleAvatar(
-                  radius: 16,
+                  radius: 20,
                   backgroundColor: Colors.grey,
                   backgroundImage:
                       CachedNetworkImageProvider(comment.profilePic),
                 ),
               ),
               const SizedBox(width: 8),
-              Text(
-                comment.displayName,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                "a moment ago",
-                style: TextStyle(
-                  color: Colors.blueGrey,
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          comment.displayName,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          "•  a moment ago",
+                          style: TextStyle(
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      comment.commentText,
+                    ),
+                  ],
                 ),
               ),
               const Spacer(),
               const Icon(Icons.more_vert),
             ],
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(right: MediaQuery.sizeOf(context).width * 0.52),
-            child: Text(
-              comment.commentText,
-            ),
           ),
         ],
       ),

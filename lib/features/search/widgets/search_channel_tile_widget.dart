@@ -19,7 +19,7 @@ class SearchChannelTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10, left: 10),
+      padding: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -30,16 +30,16 @@ class SearchChannelTile extends ConsumerWidget {
           );
         },
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircleAvatar(
-              radius: 40,
+              radius: 50,
               backgroundColor: Colors.grey,
               backgroundImage: CachedNetworkImageProvider(user.profilePic),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 45),
+              padding: const EdgeInsets.only(left: 30, bottom: 2),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     user.displayName,
@@ -49,21 +49,21 @@ class SearchChannelTile extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    user.username,
+                    "@${user.username}",
                     style: const TextStyle(
                       color: Colors.blueGrey,
                       fontSize: 13,
                     ),
                   ),
                   Text(
-                    user.subscriptions.toString(),
+                    "${user.subscriptions.length.toString()} Subscribe",
                     style: const TextStyle(
                       color: Colors.blueGrey,
                     ),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
-                    height: 40,
+                    height: 33,
                     width: 110,
                     child: FlatButton(
                       text: "Subscribe",

@@ -6,6 +6,7 @@ import 'package:youtube_clone/features/content/Long_video/parts/post.dart';
 import 'package:youtube_clone/features/search/providers/search_providers.dart';
 import 'package:youtube_clone/features/search/widgets/search_channel_tile_widget.dart';
 import 'package:youtube_clone/features/upload/long_video/video_model.dart';
+import 'package:youtube_clone/home_page.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -57,7 +58,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ));
+                    },
                     icon: Icon(
                       Icons.arrow_back,
                       color: Colors.grey.shade700,
